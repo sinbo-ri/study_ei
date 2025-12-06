@@ -8,6 +8,7 @@ let isRandomMode = false;
 let usedQuestions = [];
 let currentLesson = 'all'; // 'all', '11', '12'
 let currentSubject = 'all'; // 'all', '社会', '理科'
+let currentCorrectChoice = 1; // シャッフル後の正解の位置
 
 // DOM要素
 const elements = {
@@ -120,11 +121,17 @@ function showQuestion() {
     elements.questionNumber.textContent = `問題 ${usedQuestions.length}`;
     elements.questionText.textContent = question.question;
     
+    // 選択肢をシャッフル
+    const shuffledChoices = shuffleChoices(question.choices, question.correctAnswer);
+    
     // 選択肢を表示
-    elements.choice1.textContent = question.choices[0];
-    elements.choice2.textContent = question.choices[1];
-    elements.choice3.textContent = question.choices[2];
-    elements.choice4.textContent = question.choices[3];
+    elements.choice1.textContent = shuffledChoices.choices[0];
+    elements.choice2.textContent = shuffledChoices.choices[1];
+    elements.choice3.textContent = shuffledChoices.choices[2];
+    elements.choice4.textContent = shuffledChoices.choices[3];
+    
+    // 正解の位置を保存（1-4）
+    currentCorrectChoice = shuffledChoices.correctPosition;
     
     // ボタンをリセット
     const choiceBtns = document.querySelectorAll('.choice-btn');
@@ -140,10 +147,32 @@ function showQuestion() {
     updateStats();
 }
 
+// 選択肢をシャッフルする関数
+function shuffleChoices(choices, correctAnswer) {
+    // 選択肢と元のインデックスをペアにする
+    const choicesWithIndex = choices.map((choice, index) => ({
+        text: choice,
+        isCorrect: index === correctAnswer - 1
+    }));
+    
+    // Fisher-Yatesアルゴリズムでシャッフル
+    for (let i = choicesWithIndex.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [choicesWithIndex[i], choicesWithIndex[j]] = [choicesWithIndex[j], choicesWithIndex[i]];
+    }
+    
+    // シャッフル後の正解の位置を見つける
+    const correctPosition = choicesWithIndex.findIndex(item => item.isCorrect) + 1;
+    
+    return {
+        choices: choicesWithIndex.map(item => item.text),
+        correctPosition: correctPosition
+    };
+}
+
 // 回答チェック
 function checkAnswer(selectedChoice) {
-    const question = questions[currentQuestionIndex];
-    const isCorrect = selectedChoice === question.correctAnswer;
+    const isCorrect = selectedChoice === currentCorrectChoice;
     
     // 全てのボタンを無効化
     const choiceBtns = document.querySelectorAll('.choice-btn');
@@ -160,16 +189,19 @@ function checkAnswer(selectedChoice) {
     } else {
         selectedBtn.classList.add('incorrect');
         // 正解の選択肢も表示
-        const correctBtn = document.querySelector(`[data-choice="${question.correctAnswer}"]`);
+        const correctBtn = document.querySelector(`[data-choice="${currentCorrectChoice}"]`);
         correctBtn.classList.add('correct');
         currentStreak = 0;
     }
     
     updateStats();
     
+    // 正解のテキストを取得
+    const correctAnswerText = document.getElementById(`choice${currentCorrectChoice}`).textContent;
+    
     // 1秒後に結果画面を表示
     setTimeout(() => {
-        showResult(isCorrect, question.choices[question.correctAnswer - 1]);
+        showResult(isCorrect, correctAnswerText);
     }, 1000);
 }
 
