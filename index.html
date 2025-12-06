@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="塾の社会科対策サイト - 第11回 富山県・新潟県">
+    <title>塾 社会科対策サイト</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 塾 対策サイト</h1>
+            <div class="subtitle" id="subtitle">理科・社会</div>
+        </div>
+        
+        <div class="controls">
+            <select class="subject-select" id="subjectSelect">
+                <option value="all">全科目（40問）</option>
+                <option value="社会">社会のみ（20問）</option>
+                <option value="理科">理科のみ（20問）</option>
+            </select>
+            <select class="lesson-select" id="lessonSelect">
+                <option value="all">全授業回</option>
+                <option value="11">第11回</option>
+                <option value="12">第12回</option>
+            </select>
+            <button class="btn btn-primary" id="orderBtn">順番通り</button>
+            <button class="btn btn-secondary" id="randomBtn">ランダム</button>
+            <button class="btn btn-secondary" id="resetBtn">最初から</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">進捗</div>
+                <div class="stat-value" id="progress">0/20</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">正解数</div>
+                <div class="stat-value" id="correct">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">連続正解</div>
+                <div class="stat-value" id="streak">0</div>
+            </div>
+        </div>
+        
+        <div class="quiz-area" id="quizArea">
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="choices" id="choices">
+                <button class="choice-btn" data-choice="1">
+                    <span class="choice-label">ア.</span>
+                    <span class="choice-text" id="choice1"></span>
+                </button>
+                <button class="choice-btn" data-choice="2">
+                    <span class="choice-label">イ.</span>
+                    <span class="choice-text" id="choice2"></span>
+                </button>
+                <button class="choice-btn" data-choice="3">
+                    <span class="choice-label">ウ.</span>
+                    <span class="choice-text" id="choice3"></span>
+                </button>
+                <button class="choice-btn" data-choice="4">
+                    <span class="choice-label">エ.</span>
+                    <span class="choice-text" id="choice4"></span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="result" id="resultArea">
+            <div class="result-icon" id="resultIcon"></div>
+            <div class="result-text" id="resultText"></div>
+            <div class="correct-answer" id="correctAnswer"></div>
+            <div class="streak-message" id="streakMessage"></div>
+            <button class="next-btn" id="nextBtn">次の問題へ →</button>
+        </div>
+        
+        <div class="complete" id="completeArea">
+            <div class="complete-icon">🎊</div>
+            <div class="complete-title">お疲れ様でした！</div>
+            <div class="complete-score">
+                <div>正解数: <span id="finalCorrect">0</span> / <span id="finalTotal">20</span></div>
+                <div>正解率: <span id="finalRate">0</span>%</div>
+            </div>
+            <button class="retry-btn" id="retryBtn">もう一度挑戦</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
