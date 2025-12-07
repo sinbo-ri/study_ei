@@ -6,7 +6,7 @@ let correctCount = 0;
 let currentStreak = 0;
 let isRandomMode = false;
 let usedQuestions = [];
-let currentLesson = 'all'; // 'all', '11', '12'
+let currentLesson = 'all'; // 'all', '1', '2', ..., '20'
 let currentSubject = 'all'; // 'all', '社会', '理科'
 let currentCorrectChoice = 1; // シャッフル後の正解の位置
 
@@ -24,6 +24,7 @@ const elements = {
     resultIcon: document.getElementById('resultIcon'),
     resultText: document.getElementById('resultText'),
     correctAnswer: document.getElementById('correctAnswer'),
+    explanation: document.getElementById('explanation'),
     streakMessage: document.getElementById('streakMessage'),
     nextBtn: document.getElementById('nextBtn'),
     completeArea: document.getElementById('completeArea'),
@@ -60,8 +61,9 @@ async function loadQuestions() {
                     parts[4].trim()
                 ],
                 correctAnswer: parseInt(parts[5].trim()),
-                subject: parts[6].trim(),
-                lesson: parts[7].trim()
+                explanation: parts[6].trim(),
+                subject: parts[7].trim(),
+                lesson: parts[8].trim()
             };
         });
         
@@ -219,6 +221,8 @@ function showResult(isCorrect, correctAnswer) {
     elements.quizArea.classList.add('hidden');
     elements.resultArea.classList.add('show');
     
+    const question = questions[currentQuestionIndex];
+    
     if (isCorrect) {
         elements.resultArea.classList.remove('incorrect');
         elements.resultArea.classList.add('correct');
@@ -250,6 +254,9 @@ function showResult(isCorrect, correctAnswer) {
         elements.correctAnswer.textContent = `正解: ${correctAnswer}`;
         elements.streakMessage.classList.remove('show');
     }
+    
+    // 解説を表示
+    elements.explanation.textContent = question.explanation;
 }
 
 // 統計更新

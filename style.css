@@ -273,6 +273,27 @@ body {
     margin-bottom: 20px;
 }
 
+.explanation {
+    background: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.explanation::before {
+    content: "💡 解説";
+    display: block;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
 .streak-message {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     color: white;
